@@ -22,7 +22,7 @@ export async function GET(
     );
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tuva-tau.vercel.app/";
   const verificationUrl = `${siteUrl}/verify/${cert.verification_code}`;
 
   const pdfBytes = await generateCertificatePdf({
