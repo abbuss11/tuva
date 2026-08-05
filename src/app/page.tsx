@@ -79,12 +79,7 @@ export default function HomePage() {
             </div>
             <span className="text-lg font-bold text-gray-900">TUVA</span>
           </div>
-          <a
-            href="/login"
-            className="text-sm font-medium text-gray-500 hover:text-brand-600"
-          >
-            Espace administrateur
-          </a>
+
         </div>
       </header>
 
