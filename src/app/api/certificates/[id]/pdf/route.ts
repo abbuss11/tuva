@@ -22,7 +22,10 @@ export async function GET(
     );
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    process.env.NEXT_PUBLIC_APP_URL ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
   const verificationUrl = `${siteUrl}/verify/${cert.verification_code}`;
 
   const pdfBytes = await generateCertificatePdf({
@@ -41,7 +44,9 @@ export async function GET(
   });
 
   // Incrémente le compteur de téléchargements (best-effort)
-  await supabase.rpc("increment_download_count", { cert_id: cert.certificate_id });
+  await supabase
+    .rpc("increment_download_count", { cert_id: cert.certificate_id })
+    .catch(() => undefined);
 
   return new NextResponse(Buffer.from(pdfBytes), {
     status: 200,
