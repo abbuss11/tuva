@@ -51,7 +51,8 @@ export default function ImportPage() {
 
   return (
     <div className="mx-auto max-w-xl">
-      <h1 className="mb-1 text-2xl font-bold text-gray-900">Import CSV</h1>
+      <p className="kicker mb-1.5">Participants en masse</p>
+      <h1 className="mb-1 text-2xl font-bold tracking-tight text-gray-900">Import CSV</h1>
       <p className="mb-6 text-sm text-gray-500">
         Importez une liste de participants pour une formation existante.
         Colonnes attendues : <span className="font-medium">Nom complet</span>,{" "}

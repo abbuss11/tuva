@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Download } from "lucide-react";
+import { Search, Download, FileSearch } from "lucide-react";
 import { Card, CardBody } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
@@ -41,7 +41,8 @@ export default function AdminSearchPage() {
 
   return (
     <div className="mx-auto max-w-3xl">
-      <h1 className="mb-1 text-2xl font-bold text-gray-900">Recherche globale</h1>
+      <p className="kicker mb-1.5">Recherche</p>
+      <h1 className="mb-1 text-2xl font-bold tracking-tight text-gray-900">Recherche globale</h1>
       <p className="mb-6 text-sm text-gray-500">
         Recherchez par nom de participant, titre de formation ou numéro d&apos;attestation.
       </p>
@@ -59,17 +60,22 @@ export default function AdminSearchPage() {
       </form>
 
       {results !== null && results.length === 0 && (
-        <p className="text-sm text-gray-500">Aucun résultat.</p>
+        <Card>
+          <CardBody className="flex flex-col items-center gap-2 py-12 text-center">
+            <FileSearch className="h-8 w-8 text-gray-300" />
+            <p className="text-sm text-gray-500">Aucun résultat pour cette recherche.</p>
+          </CardBody>
+        </Card>
       )}
 
       <div className="space-y-3">
         {results?.map((cert) => (
-          <Card key={cert.certificate_id}>
+          <Card key={cert.certificate_id} className="transition-shadow hover:shadow-elevated">
             <CardBody className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="font-medium text-gray-900">{cert.full_name}</p>
                 <p className="text-sm text-gray-500">{cert.training_title}</p>
-                <p className="mt-0.5 text-xs text-gray-400">
+                <p className="mt-0.5 font-mono text-xs text-gray-400">
                   {cert.certificate_number} · {formatDateRange(cert.start_date, cert.end_date)}
                 </p>
               </div>

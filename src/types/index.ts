@@ -9,6 +9,7 @@ export type Training = {
   location: string | null;
   start_date: string;
   end_date: string;
+  accent_color: string;
   created_at: string;
   updated_at: string;
 };
@@ -53,6 +54,7 @@ export type CertificateDetails = {
   location: string | null;
   start_date: string;
   end_date: string;
+  accent_color: string;
 };
 
 export type DashboardStats = {

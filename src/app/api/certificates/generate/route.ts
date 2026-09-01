@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Attestation introuvable" }, { status: 404 });
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tuva-tau.vercel.app/";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
   const verificationUrl = `${siteUrl}/verify/${cert.verification_code}`;
 
   const pdfBytes = await generateCertificatePdf({
@@ -47,6 +47,7 @@ export async function POST(request: NextRequest) {
     verificationUrl,
     organizerLogoUrl: cert.organizer_logo_url,
     trainerSignatureUrl: cert.trainer_signature_url,
+    accentColor: cert.accent_color,
   });
 
   const path = `${cert.certificate_number}.pdf`;
