@@ -25,7 +25,7 @@ export async function GET(
   const siteUrl =
     process.env.NEXT_PUBLIC_SITE_URL ||
     process.env.NEXT_PUBLIC_APP_URL ||
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://tuva-tau.vercel.app");
   const verificationUrl = `${siteUrl}/verify/${cert.verification_code}`;
 
   const pdfBytes = await generateCertificatePdf({
