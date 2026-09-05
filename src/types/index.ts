@@ -10,6 +10,7 @@ export type Training = {
   start_date: string;
   end_date: string;
   accent_color: string;
+  registration_token: string;
   created_at: string;
   updated_at: string;
 };

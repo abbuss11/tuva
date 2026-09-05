@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/auth";
 import { generateCertificateNumber, generateVerificationCode } from "@/lib/utils";
+import { notifyCertificate } from "@/lib/notifications";
 
 export async function POST(request: NextRequest) {
   const user = await requireAdmin();
@@ -66,5 +67,14 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  return NextResponse.json({ participant, certificate }, { status: 201 });
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tuva-tau.vercel.app";
+  const notifications = await notifyCertificate({
+    fullName: participant.full_name,
+    email: participant.email,
+    phone: participant.phone,
+    certificateNumber: certificate.certificate_number,
+    certificateUrl: `${siteUrl}/api/certificates/${certificate.id}/pdf`,
+  });
+
+  return NextResponse.json({ participant, certificate, notifications }, { status: 201 });
 }

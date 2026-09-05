@@ -124,9 +124,7 @@ export default function HomePage() {
           <nav className="hidden items-center gap-6 text-sm text-slate-300 md:flex">
             <a href="#avantages" className="transition hover:text-white">Avantages</a>
             <a href="#verification" className="transition hover:text-white">Vérification</a>
-            <a href="/login" className="rounded-full border border-white/15 px-4 py-2 font-medium text-white transition hover:border-white/30 hover:bg-white/5">
-              Espace admin
-            </a>
+
           </nav>
         </div>
       </header>
@@ -156,12 +154,7 @@ export default function HomePage() {
                   Vérifier mon attestation
                   <ArrowRight className="h-4 w-4" />
                 </a>
-                <a
-                  href="/login"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-3 text-sm font-semibold text-white transition hover:border-white/30 hover:bg-white/5"
-                >
-                  Accès administrateur
-                </a>
+
               </div>
 
               <div className="mt-8 flex flex-wrap gap-6 text-sm text-slate-300">
@@ -199,7 +192,7 @@ export default function HomePage() {
                   </div>
                   <div className="rounded-xl border border-white/10 bg-white/5 p-3">
                     <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Participant</p>
-                    <p className="mt-2 font-medium text-white">Jean Dupont</p>
+                    <p className="mt-2 font-medium text-white">Ali Nouhou</p>
                   </div>
                   <div className="rounded-xl border border-white/10 bg-white/5 p-3">
                     <p className="text-xs uppercase tracking-[0.16em] text-slate-400">Statut</p>

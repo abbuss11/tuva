@@ -17,6 +17,11 @@ export function generateVerificationCode(): string {
   return nanoLong();
 }
 
+export function generateRegistrationToken(): string {
+  const nanoLong = customAlphabet(alphabet, 24);
+  return nanoLong();
+}
+
 export function cn(...inputs: ClassValue[]) {
   return clsx(inputs);
 }

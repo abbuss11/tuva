@@ -21,6 +21,7 @@ create table if not exists public.trainings (
   start_date date not null,
   end_date date not null,
   accent_color text not null default '#2557eb',
+  registration_token text not null default gen_random_uuid()::text unique,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
@@ -28,6 +29,20 @@ create table if not exists public.trainings (
 -- Si la table existait déjà avant l'ajout de cette fonctionnalité :
 alter table public.trainings
   add column if not exists accent_color text not null default '#2557eb';
+
+alter table public.trainings
+  add column if not exists registration_token text;
+
+update public.trainings
+set registration_token = gen_random_uuid()::text
+where registration_token is null;
+
+alter table public.trainings
+  alter column registration_token set default gen_random_uuid()::text,
+  alter column registration_token set not null;
+
+create unique index if not exists idx_trainings_registration_token
+  on public.trainings(registration_token);
 
 -- ------------------------------------------------------------
 -- 2. TABLE participants
@@ -167,3 +182,6 @@ $$ language plpgsql security definer;
 -- Supabase Auth (Authentication > Users > Add user) avec un
 -- email + mot de passe. Ce compte servira pour /login.
 -- ============================================================
+
+-- Recharge le cache de schéma PostgREST après une mise à jour.
+notify pgrst, 'reload schema';

@@ -3,6 +3,7 @@ import Papa from "papaparse";
 import { createAdminClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/auth";
 import { generateCertificateNumber, generateVerificationCode } from "@/lib/utils";
+import { notifyCertificate } from "@/lib/notifications";
 
 type CsvRow = {
   [key: string]: string;
@@ -93,7 +94,24 @@ export async function POST(request: NextRequest) {
     }
 
     if (!certOk) failures.push(row.full_name || "?");
-    else created += 1;
+    else {
+      created += 1;
+      const { data: certificate } = await supabase
+        .from("certificates")
+        .select("id, certificate_number")
+        .eq("participant_id", participant.id)
+        .single();
+      if (certificate) {
+        const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://tuva-tau.vercel.app";
+        await notifyCertificate({
+          fullName: participant.full_name,
+          email: participant.email,
+          phone: participant.phone,
+          certificateNumber: certificate.certificate_number,
+          certificateUrl: `${siteUrl}/api/certificates/${certificate.id}/pdf`,
+        });
+      }
+    }
   }
 
   return NextResponse.json({

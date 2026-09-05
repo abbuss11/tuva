@@ -11,6 +11,7 @@ import {
   Download,
   UploadCloud,
   Users,
+  Copy,
 } from "lucide-react";
 import { Card, CardBody } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -43,6 +44,7 @@ export default function TrainingDetailPage({
   const [csvFile, setCsvFile] = useState<File | null>(null);
   const [importing, setImporting] = useState(false);
   const [importResult, setImportResult] = useState<string | null>(null);
+  const [linkCopied, setLinkCopied] = useState(false);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -149,6 +151,14 @@ export default function TrainingDetailPage({
 
   if (loading) return <p className="text-sm text-gray-500">Chargement…</p>;
   if (!training) return <p className="text-sm text-gray-500">Formation introuvable.</p>;
+
+  const registrationUrl = `${process.env.NEXT_PUBLIC_SITE_URL || "https://tuva-tau.vercel.app"}/register/${training.registration_token}`;
+
+  async function copyRegistrationLink() {
+    await navigator.clipboard.writeText(registrationUrl);
+    setLinkCopied(true);
+    setTimeout(() => setLinkCopied(false), 2000);
+  }
 
   return (
     <div className="mx-auto max-w-4xl">
@@ -271,6 +281,22 @@ export default function TrainingDetailPage({
             </div>
 
             <div className="space-y-6">
+              <Card>
+                <CardBody>
+                  <h2 className="mb-2 font-semibold text-gray-900">Lien d’inscription</h2>
+                  <p className="mb-3 text-xs text-gray-500">
+                    Partagez ce lien pour permettre aux participants de saisir leurs informations.
+                  </p>
+                  <p className="mb-3 break-all rounded-lg bg-gray-50 p-2 text-xs text-gray-600">
+                    {registrationUrl}
+                  </p>
+                  <Button type="button" className="w-full" size="sm" variant="secondary" onClick={copyRegistrationLink}>
+                    <Copy className="h-3.5 w-3.5" />
+                    {linkCopied ? "Lien copié" : "Copier le lien"}
+                  </Button>
+                </CardBody>
+              </Card>
+
               <Card>
                 <CardBody>
                   <h2 className="mb-3 flex items-center gap-2 font-semibold text-gray-900">
