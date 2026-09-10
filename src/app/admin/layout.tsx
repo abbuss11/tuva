@@ -20,7 +20,7 @@ export default async function AdminLayout({
       </div>
 
       <div className="flex min-h-screen flex-1 flex-col">
-        <header className="flex items-center justify-between border-b border-gray-200 bg-white px-4 py-3 sm:hidden">
+        <header className="flex items-center justify-between border-b border-gray-100 bg-white px-4 py-3 sm:hidden">
           <div className="flex items-center gap-2">
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand-600">
               <ShieldCheck className="h-3.5 w-3.5 text-white" />
@@ -29,8 +29,11 @@ export default async function AdminLayout({
           </div>
           <LogoutButton />
         </header>
-        <div className="hidden items-center justify-end border-b border-gray-200 bg-white px-8 py-2.5 sm:flex">
-          <p className="text-xs text-gray-400">{user?.email}</p>
+        <div className="hidden items-center justify-end gap-2.5 border-b border-gray-100 bg-white px-8 py-2.5 sm:flex">
+          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-600 text-[10px] font-semibold text-white">
+            {user?.email?.[0]?.toUpperCase() ?? "A"}
+          </div>
+          <p className="text-xs text-gray-500">{user?.email}</p>
         </div>
         <main className="flex-1 px-4 py-6 sm:px-8 sm:py-8">{children}</main>
       </div>

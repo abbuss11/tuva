@@ -1,8 +1,8 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 
 html {
   font-family: "Inter", system-ui, sans-serif;
@@ -11,6 +11,7 @@ html {
 
 body {
   background-color: #f8fafc;
+  font-feature-settings: "cv11", "ss01";
 }
 
 ::selection {
@@ -19,24 +20,48 @@ body {
 
 @layer components {
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-150 disabled:cursor-not-allowed disabled:opacity-50;
   }
   .btn-primary {
-    @apply btn bg-brand-600 text-white shadow-soft hover:bg-brand-700;
+    @apply btn bg-brand-600 text-white shadow-glow hover:bg-brand-700 hover:shadow-elevated active:scale-[0.98];
   }
   .btn-secondary {
-    @apply btn border border-gray-200 bg-white text-gray-700 hover:bg-gray-50;
+    @apply btn border border-gray-200 bg-white text-gray-700 hover:border-gray-300 hover:bg-gray-50 active:scale-[0.98];
   }
   .btn-danger {
-    @apply btn bg-red-600 text-white hover:bg-red-700;
+    @apply btn bg-red-600 text-white hover:bg-red-700 active:scale-[0.98];
   }
   .input {
-    @apply w-full rounded-lg border border-gray-200 bg-white px-3.5 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-100;
+    @apply w-full rounded-lg border border-gray-200 bg-white px-3.5 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 transition-colors focus:border-brand-500 focus:outline-none focus:ring-4 focus:ring-brand-100;
   }
   .label {
     @apply mb-1.5 block text-sm font-medium text-gray-700;
   }
   .card {
     @apply rounded-2xl border border-gray-100 bg-white shadow-card;
+  }
+
+  /* Étiquette "kicker" — petit texte majuscule tracé, utilisé comme
+     éyebrow au-dessus des titres pour une touche premium/éditoriale. */
+  .kicker {
+    @apply inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-brand-600;
+  }
+
+  /* Carte "verre dépoli" pour les sections sur fond sombre (login, hero). */
+  .glass-card {
+    @apply rounded-2xl border border-white/10 bg-white/[0.06] backdrop-blur-xl;
+  }
+
+  /* Halo décoratif radial, utilisé derrière les héros sombres. */
+  .bg-aurora {
+    background-image:
+      radial-gradient(circle at 15% 0%, rgba(96, 154, 250, 0.35), transparent 45%),
+      radial-gradient(circle at 85% 20%, rgba(124, 58, 237, 0.25), transparent 45%),
+      radial-gradient(circle at 50% 100%, rgba(37, 87, 235, 0.3), transparent 55%);
+  }
+
+  /* Texte en dégradé, pour les titres marquants. */
+  .text-gradient {
+    @apply bg-gradient-to-r from-white via-brand-100 to-white bg-clip-text text-transparent;
   }
 }

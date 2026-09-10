@@ -330,7 +330,18 @@ function formatFr(dateIso: string): string {
 }
 
 function loadFont(name: string): Uint8Array {
-  return fs.readFileSync(path.join(__dirname, "fonts", name));
+  const candidates = [
+    path.resolve(process.cwd(), "src", "lib", "pdf", "fonts", name),
+    path.resolve(__dirname, "fonts", name),
+    path.resolve(process.cwd(), "app", "lib", "pdf", "fonts", name),
+  ];
+
+  const fontPath = candidates.find((candidate) => fs.existsSync(candidate));
+  if (!fontPath) {
+    throw new Error(`Police introuvable: ${name}`);
+  }
+
+  return fs.readFileSync(fontPath);
 }
 
 // ------------------------------------------------------------------

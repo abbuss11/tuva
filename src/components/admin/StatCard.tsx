@@ -13,16 +13,18 @@ export function StatCard({
   accent: string;
 }) {
   return (
-    <Card>
+    <Card className="group overflow-hidden transition-shadow hover:shadow-elevated">
       <CardBody className="flex items-center gap-4">
         <div
-          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg"
-          style={{ backgroundColor: accent + "1a" }}
+          className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-transform group-hover:scale-105"
+          style={{
+            background: `linear-gradient(135deg, ${accent}22, ${accent}0d)`,
+          }}
         >
           <Icon className="h-5 w-5" style={{ color: accent }} />
         </div>
         <div>
-          <p className="text-2xl font-bold text-gray-900">{value}</p>
+          <p className="text-2xl font-bold tracking-tight text-gray-900">{value}</p>
           <p className="text-sm text-gray-500">{label}</p>
         </div>
       </CardBody>

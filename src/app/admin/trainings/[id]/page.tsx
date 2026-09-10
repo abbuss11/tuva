@@ -177,7 +177,16 @@ export default function TrainingDetailPage({
         <>
           <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">{training.title}</h1>
+              <div className="mb-1.5 flex items-center gap-2">
+                <span
+                  className="h-2.5 w-2.5 shrink-0 rounded-full ring-4"
+                  style={{
+                    backgroundColor: training.accent_color || "#2557eb",
+                    boxShadow: `0 0 0 4px ${(training.accent_color || "#2557eb")}1a`,
+                  }}
+                />
+                <h1 className="text-2xl font-bold tracking-tight text-gray-900">{training.title}</h1>
+              </div>
               <p className="mt-1 text-sm text-gray-500">
                 {training.organizer} · {formatDateRange(training.start_date, training.end_date)}
                 {training.location ? ` · ${training.location}` : ""}
@@ -223,11 +232,11 @@ export default function TrainingDetailPage({
                         return (
                           <li
                             key={p.id}
-                            className="flex flex-col gap-2 py-3 sm:flex-row sm:items-center sm:justify-between"
+                            className="flex flex-col gap-2 rounded-lg px-2 py-3 transition-colors hover:bg-gray-50 sm:flex-row sm:items-center sm:justify-between"
                           >
                             <div>
                               <p className="font-medium text-gray-900">{p.full_name}</p>
-                              <p className="text-xs text-gray-500">
+                              <p className="font-mono text-xs text-gray-500">
                                 {cert?.certificate_number || "—"}
                                 {p.email ? ` · ${p.email}` : ""}
                                 {p.phone ? ` · ${p.phone}` : ""}

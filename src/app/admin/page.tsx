@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { GraduationCap, Users, Award, Download, Plus } from "lucide-react";
+import { GraduationCap, Users, Award, Download, Plus, ArrowRight } from "lucide-react";
 import { Card, CardBody } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
+import { StatCard } from "@/components/admin/StatCard";
 import type { DashboardStats } from "@/types";
 
 export default function AdminDashboardPage() {
@@ -18,39 +19,20 @@ export default function AdminDashboardPage() {
   }, []);
 
   const cards = [
-    {
-      label: "Formations",
-      value: stats?.trainingsCount,
-      icon: GraduationCap,
-      color: "bg-brand-50 text-brand-600",
-    },
-    {
-      label: "Participants",
-      value: stats?.participantsCount,
-      icon: Users,
-      color: "bg-emerald-50 text-emerald-600",
-    },
-    {
-      label: "Attestations",
-      value: stats?.certificatesCount,
-      icon: Award,
-      color: "bg-amber-50 text-amber-600",
-    },
-    {
-      label: "Téléchargements",
-      value: stats?.totalDownloads,
-      icon: Download,
-      color: "bg-violet-50 text-violet-600",
-    },
+    { label: "Formations", value: stats?.trainingsCount, icon: GraduationCap, accent: "#2557eb" },
+    { label: "Participants", value: stats?.participantsCount, icon: Users, accent: "#0f9d6e" },
+    { label: "Attestations", value: stats?.certificatesCount, icon: Award, accent: "#d97706" },
+    { label: "Téléchargements", value: stats?.totalDownloads, icon: Download, accent: "#7c3aed" },
   ];
 
   return (
     <div>
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Tableau de bord</h1>
+          <p className="kicker mb-1.5">Vue d&apos;ensemble</p>
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900">Tableau de bord</h1>
           <p className="mt-1 text-sm text-gray-500">
-            Vue d&apos;ensemble de vos formations et attestations
+            Vos formations et attestations, en un coup d&apos;œil
           </p>
         </div>
         <Link href="/admin/trainings/new">
@@ -63,33 +45,32 @@ export default function AdminDashboardPage() {
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map((card) => (
-          <Card key={card.label}>
-            <CardBody className="flex items-center gap-4">
-              <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${card.color}`}>
-                <card.icon className="h-5 w-5" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">
-                  {card.value ?? "—"}
-                </p>
-                <p className="text-sm text-gray-500">{card.label}</p>
-              </div>
-            </CardBody>
-          </Card>
+          <StatCard
+            key={card.label}
+            label={card.label}
+            value={card.value ?? "—"}
+            icon={card.icon}
+            accent={card.accent}
+          />
         ))}
       </div>
 
-      <Card className="mt-8">
-        <CardBody className="flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <Card className="relative mt-8 overflow-hidden">
+        <div className="absolute inset-0 bg-aurora opacity-[0.04]" />
+        <CardBody className="relative flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h2 className="font-semibold text-gray-900">Commencer</h2>
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 max-w-md text-sm text-gray-500">
               Créez une formation, ajoutez des participants, et TUVA génère
-              automatiquement leurs attestations téléchargeables.
+              automatiquement leurs attestations téléchargeables — avec la
+              couleur de votre choix.
             </p>
           </div>
           <Link href="/admin/trainings">
-            <Button variant="secondary">Voir les formations</Button>
+            <Button variant="secondary">
+              Voir les formations
+              <ArrowRight className="h-4 w-4" />
+            </Button>
           </Link>
         </CardBody>
       </Card>

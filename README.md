@@ -196,7 +196,25 @@ ré-exécutez `supabase/schema.sql` dans le SQL Editor : il contient un
 `alter table ... add column if not exists accent_color ...` qui met à
 jour le schéma sans perte de données.
 
-## 7. Notes techniques
+## 7. Interface premium
+
+L'ensemble de l'interface a été rehaussé visuellement (design tokens
+Tailwind, dégradés, animations légères) :
+- **Pages publiques** (recherche, connexion, vérification) : héros sombre
+  avec halo dégradé + grille discrète, titres en dégradé, cartes en
+  "surimpression" avec ombre marquée, transitions d'apparition douces.
+- **Espace admin** : cartes de statistiques avec icônes en dégradé,
+  barre latérale avec indicateur d'onglet actif, cartes de formation
+  avec liseré reprenant la couleur d'accent de chaque formation.
+- Nouveaux tokens dans `tailwind.config.ts` : palette `ink` (bleu nuit),
+  ombres `shadow-glow` / `shadow-elevated`, classes utilitaires
+  `.glass-card`, `.bg-aurora`, `.text-gradient`, `.kicker` (définies
+  dans `src/app/globals.css`).
+
+Aucun changement de comportement : uniquement du style. Toutes les
+fonctionnalités et routes restent identiques.
+
+## 8. Notes techniques
 
 - Les PDF sont **générés à la volée** à chaque téléchargement (pas de
   stockage obligatoire), ce qui garantit qu'un logo/une signature modifiés
@@ -211,7 +229,7 @@ jour le schéma sans perte de données.
 
 ---
 
-## 8. Limites connues du MVP
+## 9. Limites connues du MVP
 
 - Un seul rôle (administrateur) : pas de gestion multi-organisation ni
   de rôles intermédiaires.

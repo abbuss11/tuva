@@ -5,12 +5,21 @@ import { useRouter } from "next/navigation";
 import { Input, Textarea } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { Card, CardBody } from "@/components/ui/Card";
-import { UploadCloud, Check } from "lucide-react";
+import { UploadCloud, Check, Palette } from "lucide-react";
 import type { Training } from "@/types";
 
 type Props = {
   training?: Training;
 };
+
+const COLOR_PRESETS = [
+  { label: "Bleu TUVA", value: "#2557eb" },
+  { label: "Émeraude", value: "#0f9d6e" },
+  { label: "Violet", value: "#7c3aed" },
+  { label: "Ambre", value: "#d97706" },
+  { label: "Rose", value: "#e11d48" },
+  { label: "Ardoise", value: "#334155" },
+];
 
 async function uploadFile(file: File, folder: string): Promise<string> {
   const formData = new FormData();
@@ -21,15 +30,6 @@ async function uploadFile(file: File, folder: string): Promise<string> {
   if (!res.ok) throw new Error(data.error || "Échec de l'upload");
   return data.url as string;
 }
-
-const COLOR_PRESETS = [
-  { label: "Bleu TUVA", value: "#2557eb" },
-  { label: "Émeraude", value: "#0f9d6e" },
-  { label: "Violet", value: "#7c3aed" },
-  { label: "Ambre", value: "#d97706" },
-  { label: "Rose", value: "#e11d48" },
-  { label: "Ardoise", value: "#334155" },
-];
 
 export function TrainingForm({ training }: Props) {
   const router = useRouter();
@@ -125,6 +125,12 @@ export function TrainingForm({ training }: Props) {
     <form onSubmit={handleSubmit} className="space-y-6">
       <Card>
         <CardBody className="space-y-4">
+          <div className="mb-1 flex items-center gap-2">
+            <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500">
+              Informations générales
+            </h2>
+          </div>
           <Input
             label="Titre de la formation *"
             value={form.title}
@@ -180,47 +186,56 @@ export function TrainingForm({ training }: Props) {
 
       <Card>
         <CardBody>
-          <h2 className="mb-1 font-semibold text-gray-900">
-            Personnalisation de l&apos;attestation
-          </h2>
-          <p className="mb-4 text-xs text-gray-500">
+          <div className="mb-1 flex items-center gap-2">
+            <Palette className="h-3.5 w-3.5 text-brand-500" />
+            <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500">
+              Personnalisation de l&apos;attestation
+            </h2>
+          </div>
+          <p className="mb-4 text-sm text-gray-500">
             Choisissez la couleur d&apos;accent utilisée sur le PDF généré
-            (bandeau, sceau, liseré). Le logo et la signature ci-dessous
+            (bandeau, sceau, liseré) — le logo et la signature ci-dessous
             complètent le rendu.
           </p>
           <div className="flex flex-wrap items-center gap-3">
-            {COLOR_PRESETS.map((preset) => (
-              <button
-                key={preset.value}
-                type="button"
-                title={preset.label}
-                onClick={() => setAccentColor(preset.value)}
-                className="relative h-9 w-9 shrink-0 rounded-full border border-black/5 shadow-sm transition-transform hover:scale-110"
-                style={{ backgroundColor: preset.value }}
-              >
-                {accentColor.toLowerCase() === preset.value && (
-                  <Check className="absolute inset-0 m-auto h-4 w-4 text-white" />
-                )}
-              </button>
-            ))}
-            <span className="mx-1 h-6 w-px bg-gray-200" />
+            {COLOR_PRESETS.map((preset) => {
+              const active = accentColor.toLowerCase() === preset.value;
+              return (
+                <button
+                  key={preset.value}
+                  type="button"
+                  title={preset.label}
+                  onClick={() => setAccentColor(preset.value)}
+                  className="relative h-10 w-10 shrink-0 rounded-full shadow-sm ring-2 ring-offset-2 transition-transform hover:scale-110"
+                  style={{
+                    backgroundColor: preset.value,
+                    ...( { "--tw-ring-color": active ? preset.value : "transparent" } as React.CSSProperties),
+                  }}
+                >
+                  {active && (
+                    <Check className="absolute inset-0 m-auto h-4 w-4 text-white drop-shadow" />
+                  )}
+                </button>
+              );
+            })}
+            <span className="mx-1 h-8 w-px bg-gray-200" />
             <label className="flex items-center gap-2 text-sm text-gray-600">
               <input
                 type="color"
                 value={accentColor}
                 onChange={(e) => setAccentColor(e.target.value)}
-                className="h-9 w-9 cursor-pointer rounded-full border-0 bg-transparent p-0"
+                className="h-10 w-10 cursor-pointer rounded-full border-0 bg-transparent p-0"
               />
               Personnalisée
             </label>
-            <span className="font-mono text-xs uppercase text-gray-400">
+            <span className="rounded-md bg-gray-50 px-2 py-1 font-mono text-xs uppercase text-gray-500">
               {accentColor}
             </span>
           </div>
 
           {/* Aperçu miniature du bandeau de l'attestation */}
           <div
-            className="mt-4 flex h-16 items-center justify-between rounded-lg px-4 text-white shadow-inner"
+            className="mt-5 flex h-16 items-center justify-between overflow-hidden rounded-xl px-5 text-white shadow-inner"
             style={{
               background: `linear-gradient(120deg, ${accentColor}, ${accentColor}cc)`,
             }}
@@ -286,7 +301,7 @@ function ImageUploadField({
   return (
     <div>
       <label className="label">{label}</label>
-      <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-gray-200 px-4 py-6 text-center transition-colors hover:border-brand-300 hover:bg-brand-50/30">
+      <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed border-gray-200 px-4 py-6 text-center transition-colors hover:border-brand-300 hover:bg-brand-50/30">
         {previewUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
