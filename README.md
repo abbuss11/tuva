@@ -175,7 +175,28 @@ confirme (ou non) l'authenticité du document.
 
 ---
 
-## 6. Notes techniques
+## 6. Modèle d'attestation (design)
+
+Le PDF généré (`src/lib/pdf/generateCertificate.ts`) utilise un design
+moderne : bandeau supérieur en biais, dégradé de couleur, sceau
+« certifié » avec ruban, QR code encadré, typographie **Poppins**
+(embarquée via `@pdf-lib/fontkit`, licence SIL Open Font License —
+fichiers dans `src/lib/pdf/fonts/`).
+
+**Personnalisation par formation** : chaque formation a un champ
+`accent_color` (hexadécimal, ex. `#2557eb`). Il pilote automatiquement
+la couleur du bandeau, du sceau, du QR code et des liserés du PDF —
+modifiable depuis **Formations → Modifier → Personnalisation de
+l'attestation** dans l'admin (6 couleurs prédéfinies + sélecteur
+personnalisé). Cela permet à chaque organisateur/formation d'avoir une
+identité visuelle propre sans toucher au code.
+
+⚠️ Si votre projet Supabase existait déjà avant cette fonctionnalité,
+ré-exécutez `supabase/schema.sql` dans le SQL Editor : il contient un
+`alter table ... add column if not exists accent_color ...` qui met à
+jour le schéma sans perte de données.
+
+## 7. Notes techniques
 
 - Les PDF sont **générés à la volée** à chaque téléchargement (pas de
   stockage obligatoire), ce qui garantit qu'un logo/une signature modifiés
@@ -190,7 +211,7 @@ confirme (ou non) l'authenticité du document.
 
 ---
 
-## 7. Limites connues du MVP
+## 8. Limites connues du MVP
 
 - Un seul rôle (administrateur) : pas de gestion multi-organisation ni
   de rôles intermédiaires.
@@ -198,5 +219,3 @@ confirme (ou non) l'authenticité du document.
   `Nom complet / Téléphone / Email` (variantes de casse tolérées).
 - Pas de renvoi d'attestation par email/SMS dans ce MVP (le participant
   récupère lui-même son PDF via le site).
-#   t u v a  
- 

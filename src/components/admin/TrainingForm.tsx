@@ -22,6 +22,15 @@ async function uploadFile(file: File, folder: string): Promise<string> {
   return data.url as string;
 }
 
+const COLOR_PRESETS = [
+  { label: "Bleu TUVA", value: "#2557eb" },
+  { label: "Émeraude", value: "#0f9d6e" },
+  { label: "Violet", value: "#7c3aed" },
+  { label: "Ambre", value: "#d97706" },
+  { label: "Rose", value: "#e11d48" },
+  { label: "Ardoise", value: "#334155" },
+];
+
 export function TrainingForm({ training }: Props) {
   const router = useRouter();
   const isEdit = Boolean(training);
@@ -35,6 +44,7 @@ export function TrainingForm({ training }: Props) {
     start_date: training?.start_date || "",
     end_date: training?.end_date || "",
   });
+  const [accentColor, setAccentColor] = useState(training?.accent_color || "#2557eb");
   const [logoUrl, setLogoUrl] = useState(training?.organizer_logo_url || "");
   const [signatureUrl, setSignatureUrl] = useState(
     training?.trainer_signature_url || ""
@@ -87,6 +97,7 @@ export function TrainingForm({ training }: Props) {
       ...form,
       organizer_logo_url: logoUrl || null,
       trainer_signature_url: signatureUrl || null,
+      accent_color: accentColor,
     };
 
     try {
@@ -163,6 +174,61 @@ export function TrainingForm({ training }: Props) {
               onChange={(e) => update("end_date", e.target.value)}
               required
             />
+          </div>
+        </CardBody>
+      </Card>
+
+      <Card>
+        <CardBody>
+          <h2 className="mb-1 font-semibold text-gray-900">
+            Personnalisation de l&apos;attestation
+          </h2>
+          <p className="mb-4 text-xs text-gray-500">
+            Choisissez la couleur d&apos;accent utilisée sur le PDF généré
+            (bandeau, sceau, liseré). Le logo et la signature ci-dessous
+            complètent le rendu.
+          </p>
+          <div className="flex flex-wrap items-center gap-3">
+            {COLOR_PRESETS.map((preset) => (
+              <button
+                key={preset.value}
+                type="button"
+                title={preset.label}
+                onClick={() => setAccentColor(preset.value)}
+                className="relative h-9 w-9 shrink-0 rounded-full border border-black/5 shadow-sm transition-transform hover:scale-110"
+                style={{ backgroundColor: preset.value }}
+              >
+                {accentColor.toLowerCase() === preset.value && (
+                  <Check className="absolute inset-0 m-auto h-4 w-4 text-white" />
+                )}
+              </button>
+            ))}
+            <span className="mx-1 h-6 w-px bg-gray-200" />
+            <label className="flex items-center gap-2 text-sm text-gray-600">
+              <input
+                type="color"
+                value={accentColor}
+                onChange={(e) => setAccentColor(e.target.value)}
+                className="h-9 w-9 cursor-pointer rounded-full border-0 bg-transparent p-0"
+              />
+              Personnalisée
+            </label>
+            <span className="font-mono text-xs uppercase text-gray-400">
+              {accentColor}
+            </span>
+          </div>
+
+          {/* Aperçu miniature du bandeau de l'attestation */}
+          <div
+            className="mt-4 flex h-16 items-center justify-between rounded-lg px-4 text-white shadow-inner"
+            style={{
+              background: `linear-gradient(120deg, ${accentColor}, ${accentColor}cc)`,
+            }}
+          >
+            <span className="text-xs font-semibold uppercase tracking-wider">
+              Attestation de participation
+            </span>
+            <span className="text-[10px] opacity-80">Aperçu du bandeau</span>
           </div>
         </CardBody>
       </Card>
