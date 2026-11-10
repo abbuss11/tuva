@@ -31,6 +31,7 @@ export async function POST(request: NextRequest) {
     end_date,
     trainer_signature_url,
     organizer_logo_url,
+    organizer_stamp_url,
     accent_color,
   } = body;
 
@@ -54,6 +55,7 @@ export async function POST(request: NextRequest) {
       end_date,
       trainer_signature_url: trainer_signature_url || null,
       organizer_logo_url: organizer_logo_url || null,
+      organizer_stamp_url: organizer_stamp_url || null,
       accent_color: accent_color || "#2557eb",
     })
     .select()

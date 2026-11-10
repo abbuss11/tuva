@@ -47,6 +47,7 @@ export async function POST(request: NextRequest) {
     verificationUrl,
     organizerLogoUrl: cert.organizer_logo_url,
     trainerSignatureUrl: cert.trainer_signature_url,
+    organizerStampUrl: cert.organizer_stamp_url,
     accentColor: cert.accent_color,
   });
 

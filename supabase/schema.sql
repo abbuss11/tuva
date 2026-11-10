@@ -17,6 +17,7 @@ create table if not exists public.trainings (
   trainer text not null,
   trainer_signature_url text,
   organizer_logo_url text,
+  organizer_stamp_url text,
   location text,
   start_date date not null,
   end_date date not null,
@@ -28,6 +29,8 @@ create table if not exists public.trainings (
 -- Si la table existait déjà avant l'ajout de cette fonctionnalité :
 alter table public.trainings
   add column if not exists accent_color text not null default '#2557eb';
+alter table public.trainings
+  add column if not exists organizer_stamp_url text;
 
 -- ------------------------------------------------------------
 -- 2. TABLE participants
@@ -104,7 +107,8 @@ select
   t.location,
   t.start_date,
   t.end_date,
-  t.accent_color
+  t.accent_color,
+  t.organizer_stamp_url
 from public.certificates c
 join public.participants p on p.id = c.participant_id
 join public.trainings t on t.id = p.training_id;

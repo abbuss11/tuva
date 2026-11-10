@@ -52,6 +52,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
     "end_date",
     "trainer_signature_url",
     "organizer_logo_url",
+    "organizer_stamp_url",
     "accent_color",
   ];
   const updates: Record<string, unknown> = {};

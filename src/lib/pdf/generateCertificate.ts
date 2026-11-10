@@ -16,6 +16,7 @@ export type CertificatePdfInput = {
   verificationUrl: string;
   organizerLogoUrl?: string | null;
   trainerSignatureUrl?: string | null;
+  organizerStampUrl?: string | null;
   /** Couleur d'accent hexadécimale propre à la formation (ex: "#2557eb"). */
   accentColor?: string | null;
 };
@@ -538,9 +539,35 @@ export async function generateCertificatePdf(input: CertificatePdfInput): Promis
       }
     }
   }
+  if (input.organizerStampUrl) {
+    const bytes = await fetchImageBytes(input.organizerStampUrl);
+    if (bytes) {
+      try {
+        const img = await embedImageAuto(pdfDoc, bytes, input.organizerStampUrl);
+        const scale = Math.min(82 / img.width, 52 / img.height);
+        const stampWidth = img.width * scale;
+        const stampHeight = img.height * scale;
+        page.drawImage(img, {
+          x: 278 + (82 - stampWidth) / 2,
+          y: footLineY + 5 + (52 - stampHeight) / 2,
+          width: stampWidth,
+          height: stampHeight,
+        });
+      } catch {
+        // ignore
+      }
+    }
+  }
   page.drawLine({ start: { x: sigX, y: footLineY }, end: { x: sigX + 170, y: footLineY }, thickness: 1, color: toColor(hairline) });
   page.drawText(input.trainer, { x: sigX, y: footLineY - 16, size: 12, font: fontSemiBold, color: toColor(ink) });
   drawTracked(page, "FORMATEUR", sigX, footLineY - 29, { font: fontMedium, size: 8, color: toColor(slate), tracking: 1.4 });
+  if (input.organizerStampUrl) {
+    drawCentered(page, "CACHET", 319, footLineY - 29, {
+      font: fontMedium,
+      size: 8,
+      color: toColor(slate),
+    });
+  }
 
   // Colonne centrale : sceau + numéro d'attestation
   const centerX = width / 2;

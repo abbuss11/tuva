@@ -6,6 +6,7 @@ export type Training = {
   trainer: string;
   trainer_signature_url: string | null;
   organizer_logo_url: string | null;
+  organizer_stamp_url: string | null;
   location: string | null;
   start_date: string;
   end_date: string;
@@ -51,6 +52,7 @@ export type CertificateDetails = {
   trainer: string;
   trainer_signature_url: string | null;
   organizer_logo_url: string | null;
+  organizer_stamp_url: string | null;
   location: string | null;
   start_date: string;
   end_date: string;

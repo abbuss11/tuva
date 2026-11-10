@@ -49,8 +49,10 @@ export function TrainingForm({ training }: Props) {
   const [signatureUrl, setSignatureUrl] = useState(
     training?.trainer_signature_url || ""
   );
+  const [stampUrl, setStampUrl] = useState(training?.organizer_stamp_url || "");
   const [uploadingLogo, setUploadingLogo] = useState(false);
   const [uploadingSig, setUploadingSig] = useState(false);
+  const [uploadingStamp, setUploadingStamp] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -88,6 +90,21 @@ export function TrainingForm({ training }: Props) {
     }
   }
 
+  async function handleStampChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingStamp(true);
+    setError(null);
+    try {
+      const url = await uploadFile(file, "stamps");
+      setStampUrl(url);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Échec de l'upload du cachet");
+    } finally {
+      setUploadingStamp(false);
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSaving(true);
@@ -97,6 +114,7 @@ export function TrainingForm({ training }: Props) {
       ...form,
       organizer_logo_url: logoUrl || null,
       trainer_signature_url: signatureUrl || null,
+      organizer_stamp_url: stampUrl || null,
       accent_color: accentColor,
     };
 
@@ -139,11 +157,11 @@ export function TrainingForm({ training }: Props) {
             required
           />
           <Textarea
-            label="Description"
+            label="Description / détails de la formation"
             value={form.description}
             onChange={(e) => update("description", e.target.value)}
-            rows={3}
-            placeholder="Brève description de la formation"
+            rows={4}
+            placeholder="Décrivez le contenu, les objectifs ou les compétences abordées…"
           />
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Input
@@ -261,6 +279,12 @@ export function TrainingForm({ training }: Props) {
             uploading={uploadingSig}
             previewUrl={signatureUrl}
             onChange={handleSignatureChange}
+          />
+          <ImageUploadField
+            label="Cachet de l'organisateur"
+            uploading={uploadingStamp}
+            previewUrl={stampUrl}
+            onChange={handleStampChange}
           />
         </CardBody>
       </Card>
